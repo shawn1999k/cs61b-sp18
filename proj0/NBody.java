@@ -11,11 +11,11 @@ public class NBody {
 	public static Planet[] readPlanets(String filename) {
 		In in = new In(filename);
 
-		Planet[] fivep = new Planet[5];
 		int n = in.readInt();
 		double r = in.readDouble();
+		Planet[] fivep = new Planet[n];
 
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < n; i++) {
 			double xxPos = in.readDouble();
 			double yyPos = in.readDouble();
 			double xxVel = in.readDouble();
@@ -31,18 +31,17 @@ public class NBody {
 	}
 
 	public static void main(String[] args) {
-		  int i = 0;
-		  double time =0;
-		  double[] xForces = new double[5];
-          double[] yForces = new double[5];
-
 		  double T = Double.parseDouble(args[0]);
 		  double dt = Double.parseDouble(args[1]);
 		  String filename = args[2];
 		  double radius = NBody.readRadius(filename);
-          Planet[] planets = new Planet[5];
-          planets = NBody.readPlanets(filename);
+          Planet[] planets = NBody.readPlanets(filename);
           String starfield = "./images/starfield.jpg";
+
+          int i = 0;
+		  double time =0;
+		  double[] xForces = new double[planets.length];
+          double[] yForces = new double[planets.length];
 
           StdDraw.enableDoubleBuffering();
 
@@ -52,24 +51,24 @@ public class NBody {
 
           StdDraw.picture(0, 0, starfield);
 
-          for (i = 0; i < 5; i++) {
+          for (i = 0; i < planets.length; i++) {
           	planets[i].draw();
           }
 
           while (time <= T) {
 
-          	for (i = 0; i < 5; i++) {
+          	for (i = 0; i < planets.length; i++) {
           		xForces[i] = planets[i].calcNetForceExertedByX(planets);
           		yForces[i] = planets[i].calcNetForceExertedByY(planets);
           	}
 
-            for (i = 0; i < 5; i++) {
+            for (i = 0; i < planets.length; i++) {
           	    planets[i].update(dt, xForces[i], yForces[i]);
           	}
 
           	StdDraw.picture(0, 0, starfield);
 
-          	for (i = 0; i < 5; i++) {
+          	for (i = 0; i < planets.length; i++) {
           	    planets[i].draw();
             }
 
