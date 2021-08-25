@@ -1,8 +1,8 @@
 public class LinkedListDeque<T> {
     private class Node {
-        public Node prev;
-        public T item;
-        public Node next;
+        private Node prev;
+        private T item;
+        private Node next;
 
         public Node(T x, Node p, Node n) {
             item = x;
@@ -24,7 +24,7 @@ public class LinkedListDeque<T> {
         size = 0;
     }
 
-    public LinkedListDeque(T x) {
+    private LinkedListDeque(T x) {
         sentinel = new Node(x, null, null);
         sentinel.prev = sentinel;
         sentinel.next = new Node(x, sentinel, sentinel);
@@ -35,12 +35,13 @@ public class LinkedListDeque<T> {
      * Creates a deep copy of other.
      * @param other
      */
-    public LinkedListDeque(LinkedListDeque other) {
+    private LinkedListDeque(LinkedListDeque other) {
         LinkedListDeque llq = new LinkedListDeque();
         for (int i = 0; i < other.size; i++) {
             llq.addLast(other.get(i));
         }
     }
+
 
     /**
      * Adds an item of type T to the front of the deque.
@@ -111,6 +112,7 @@ public class LinkedListDeque<T> {
             sentinel.prev = sentinel;
         }
         T fitem = sentinel.next.item;
+        sentinel.next.next.prev = sentinel;
         sentinel.next = sentinel.next.next;
         size = size - 1;
         return fitem;
@@ -128,6 +130,7 @@ public class LinkedListDeque<T> {
             sentinel.next = sentinel;
         }
         T litem = sentinel.prev.item;
+        sentinel.prev.prev.next = sentinel;
         sentinel.prev = sentinel.prev.prev;
         size = size - 1;
         return litem;
@@ -172,7 +175,7 @@ public class LinkedListDeque<T> {
         return getR(p.next, index - 1);
     }
 
-    public static void main(String[] args) {
+    private static void main(String[] args) {
         LinkedListDeque n1 = new LinkedListDeque();
         n1.addLast(1);
         n1.addFirst(2);
