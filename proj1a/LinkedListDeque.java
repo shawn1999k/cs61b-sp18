@@ -1,5 +1,3 @@
-import java.awt.geom.FlatteningPathIterator;
-
 public class LinkedListDeque<T> {
     private class Node {
         public Node prev;
@@ -20,7 +18,7 @@ public class LinkedListDeque<T> {
      * Creates an empty LinkedListDeque.
      */
     public LinkedListDeque() {
-        sentinel = new Node(null , null, null);
+        sentinel = new Node(null, null, null);
         sentinel.prev = sentinel;
         sentinel.next = sentinel;
         size = 0;
@@ -65,7 +63,7 @@ public class LinkedListDeque<T> {
         sentinel.prev = new Node(item, sentinel.prev, sentinel);
         size = size + 1;
         if (size == 1) {
-            sentinel.next =sentinel.prev;
+            sentinel.next = sentinel.prev;
         }
         sentinel.prev.prev.next = sentinel.prev;
     }
@@ -110,7 +108,7 @@ public class LinkedListDeque<T> {
             return null;
         }
         if (size == 1) {
-            sentinel.prev =sentinel;
+            sentinel.prev = sentinel;
         }
         T fitem = sentinel.next.item;
         sentinel.next = sentinel.next.next;
@@ -148,7 +146,7 @@ public class LinkedListDeque<T> {
         }
         Node p = sentinel;
         for (int i = 0; i <= index; i++) {
-            p = sentinel.next;
+            p = p.next;
         }
         return p.item;
     }
@@ -161,7 +159,7 @@ public class LinkedListDeque<T> {
         if (index < 0 || index > size - 1) {
             return null;
         }
-        return getR(sentinel.next,index);
+        return getR(sentinel.next, index);
     }
 
     /**
@@ -171,30 +169,15 @@ public class LinkedListDeque<T> {
         if (index == 0) {
             return p.item;
         }
-        return getR(p.next, index-1);
+        return getR(p.next, index - 1);
     }
 
-    private static void main(String[] args) {
+    public static void main(String[] args) {
         LinkedListDeque n1 = new LinkedListDeque();
-        System.out.println(n1.size);
-        LinkedListDeque n2 = new LinkedListDeque(1);
-        System.out.println(n2.get(0));
-        n2.printDeque();
-        n1.addFirst(1);
+        n1.addLast(1);
         n1.addFirst(2);
-        n1.addLast(3);
-        n1.printDeque();
-        n1.removeFirst();
-        n1.removeLast();
-        n1.addFirst(3);
-        n1.printDeque();
+        n1.get(1);
+
     }
-
-
-
-
-
-
-
-
 }
+
