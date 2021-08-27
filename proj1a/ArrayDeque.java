@@ -8,8 +8,9 @@ public class ArrayDeque<T> {
      * Creates an empty array deque.
      */
     public ArrayDeque() {
-        nextFirst = 0;
-        nextLast = 0;
+        items = (T[]) new Object[8];
+        nextFirst = 3;
+        nextLast = 4;
         size = 0;
     }
 
@@ -44,20 +45,15 @@ public class ArrayDeque<T> {
      * @param item
      */
     public void addFirst(T item) {
-        if (size == 0) {
-            items = (T[]) new Object[8];
-            nextFirst = 3;
-            nextLast = 4;
-        }
         if (size == items.length - 2) {
             changeADQ(size * 2);
-            }
+        }
+        items[nextFirst] = item;
         if (nextFirst == 0) {
             nextFirst = items.length - 1;
         } else {
             nextFirst = nextFirst - 1;
         }
-        items[nextFirst] = item;
         size = size + 1;
     }
 
@@ -66,20 +62,15 @@ public class ArrayDeque<T> {
      * @param item
      */
     public void addLast(T item) {
-        if (size == 0) {
-            items = (T[]) new Object[8];
-            nextFirst = 3;
-            nextLast = 4;
-        }
         if (size == items.length - 2) {
             changeADQ(size * 2);
         }
+        items[nextLast] = item;
         if (nextLast == items.length - 1) {
             nextLast = 1;
         } else {
             nextLast = nextLast + 1;
         }
-        items[nextLast] = item;
         size = size + 1;
     }
 
@@ -107,7 +98,7 @@ public class ArrayDeque<T> {
      */
     public void printDeque() {
         changeADQ(items.length);
-        for (int i = 1; i < nextLast; i++){
+        for (int i = 1; i < nextLast; i++) {
             System.out.print(items[i] + " ");
         }
         System.out.println();
@@ -172,19 +163,8 @@ public class ArrayDeque<T> {
         ArrayDeque a = new ArrayDeque();
         a.addLast(0);
         a.addLast(1);
-        a.removeLast() ;
-        a.get(0);
-        a.removeLast();
-        a.addFirst(5);
-        a.addLast(6);
-        a.removeLast();
-        a.removeLast();
-        a.addLast(9);
-        a.removeLast();
-        a.addLast(11);
-        a.addLast(12);
-        a.removeFirst();
-        a.removeFirst();
+        a.addLast(2);
+        System.out.println(a.removeLast());
     }
 }
 
