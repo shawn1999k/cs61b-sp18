@@ -22,6 +22,23 @@ public class ArrayDeque<T> {
         System.arraycopy(items, 0, other, 0, size);
     }
 
+    private void changeADQ(int length) {
+        T[] newitems = (T[]) new Object[length];
+        if (nextFirst < nextLast) {
+            System.arraycopy(items, nextFirst + 1, newitems, 1, nextLast - nextFirst - 1);
+            nextFirst = 0;
+            nextLast = size + 1;
+            items = newitems;
+            newitems = null;
+        } else {
+            System.arraycopy(items, nextFirst + 1, newitems, 1, items.length - 1 - nextFirst);
+            System.arraycopy(items, 0, newitems, items.length - nextFirst, nextFirst);
+            nextFirst = 0;
+            nextLast = size + 1;
+            items = newitems;
+            newitems = null;
+        }
+    }
     /**
      * Adds an item of type T to the front of the deque.
      * @param item
@@ -29,23 +46,18 @@ public class ArrayDeque<T> {
     public void addFirst(T item) {
         if (size == 0) {
             items = (T[]) new Object[8];
-            nextFirst = 0;
-            nextLast = 7;
+            nextFirst = 3;
+            nextLast = 4;
         }
-        if (size == items.length) {
-            T[] newItems = (T[]) new Object[items.length * 2];
-            System.arraycopy(items, 0, newItems, 0, nextFirst);
-            if (nextLast != items.length - 1) {
-                System.arraycopy(items, nextLast + 1,
-                        newItems, newItems.length - (items.length - nextLast - 1),
-                        items.length - nextLast - 1);
+        if (size == items.length - 2) {
+            changeADQ(size * 2);
             }
-            nextLast = newItems.length - 1 - (items.length - nextLast -1);
-            items = newItems;
-            newItems = null;
+        if (nextFirst == 0) {
+            nextFirst = items.length - 1;
+        } else {
+            nextFirst = nextFirst - 1;
         }
         items[nextFirst] = item;
-        nextFirst = nextFirst + 1;
         size = size + 1;
     }
 
@@ -56,23 +68,18 @@ public class ArrayDeque<T> {
     public void addLast(T item) {
         if (size == 0) {
             items = (T[]) new Object[8];
-            nextFirst = 0;
-            nextLast = 7;
+            nextFirst = 3;
+            nextLast = 4;
         }
-        if (size == items.length) {
-            T[] newItems = (T[]) new Object[items.length * 2];
-            System.arraycopy(items, 0, newItems, 0, nextFirst);
-            if (nextLast != items.length - 1) {
-                System.arraycopy(items, nextLast + 1,
-                        newItems, newItems.length - (items.length - nextLast -1),
-                        items.length - nextLast - 1);
-            }
-            nextLast = newItems.length - 1 - (items.length - nextLast -1);
-            items = newItems;
-            newItems = null;
+        if (size == items.length - 2) {
+            changeADQ(size * 2);
+        }
+        if (nextLast == items.length - 1) {
+            nextLast = 1;
+        } else {
+            nextLast = nextLast + 1;
         }
         items[nextLast] = item;
-        nextLast = nextLast - 1;
         size = size + 1;
     }
 
@@ -99,10 +106,8 @@ public class ArrayDeque<T> {
      * have been printed, print out a new line.
      */
     public void printDeque() {
-        for (int i = nextFirst - 1; i > -1; i--) {
-            System.out.print(items[i] + " ");
-        }
-        for (int i = items.length - 1; i > nextLast; i--) {
+        changeADQ(items.length);
+        for (int i = 1; i < nextLast; i++){
             System.out.print(items[i] + " ");
         }
         System.out.println();
@@ -117,26 +122,16 @@ public class ArrayDeque<T> {
             return null;
         }
         if (size * 3 <= items.length && items.length >= 16) {
-            T[] newItems = (T[]) new Object[size / 2];
-            System.arraycopy(items, 0, newItems, 0, nextFirst);
-            if (nextLast != items.length - 1) {
-                System.arraycopy(items, nextLast + 1,
-                        newItems, newItems.length - (items.length - nextLast -1),
-                        items.length - nextLast - 1);
-            }
-            items = newItems;
-            newItems = null;
-        }
-        if (nextFirst == 0) {
-            T item = items[items.length - 1];
-            items[items.length - 1] = null;
-            size = size - 1;
-            return item;
+            changeADQ(items.length / 2);
         }
         size = size - 1;
-        T item = items[nextFirst - 1];
-        items[nextFirst - 1] = null;
-        nextFirst = nextFirst - 1;
+        if (nextFirst == items.length - 1) {
+            nextFirst = 0;
+        } else {
+            nextFirst = nextFirst + 1;
+        }
+        T item = items[nextFirst];
+        items[nextFirst] = null;
         return item;
     }
 
@@ -149,27 +144,16 @@ public class ArrayDeque<T> {
             return null;
         }
         if (size * 3 <= items.length && items.length >= 16) {
-            T[] newItems = (T[]) new Object[size / 2];
-            System.arraycopy(items, 0, newItems, 0, nextFirst);
-            if (nextLast != items.length - 1) {
-                System.arraycopy(items, nextLast + 1,
-                        newItems, newItems.length - (items.length - nextLast -1),
-                        items.length - nextLast - 1);
-            }
-            items = newItems;
-            newItems = null;
-        }
-        if (nextLast == items.length - 1) {
-            T item = items[nextFirst - 1];
-            items[nextFirst - 1] = null;
-            size = size - 1;
-            nextFirst = nextFirst - 1;
-            return item;
+            changeADQ(items.length / 2);
         }
         size = size - 1;
-        T item = items[nextLast + 1];
-        items[nextLast + 1] = null;
-        nextLast = nextLast + 1;
+        if (nextLast == 0) {
+            nextLast = items.length - 1;
+        } else {
+            nextLast = nextLast - 1;
+        }
+        T item = items[nextLast];
+        items[nextLast] = null;
         return item;
     }
 
@@ -180,28 +164,27 @@ public class ArrayDeque<T> {
      * @param index
      */
     public T get(int index) {
-        if (index < 0 || index > size - 1) {
-            return null;
-        }
-        if (index < nextFirst) {
-            return items[nextFirst - (index + 1)];
-        }
-        return items[items.length - ((index + 1) - nextFirst)];
+        changeADQ(items.length);
+        return items[index + 1];
     }
 
     private static void main(String[] args) {
         ArrayDeque a = new ArrayDeque();
-        a.addLast(2);
-        a.addLast(3);
-        a.addLast(4);
-        a.addLast(5);
+        a.addLast(0);
+        a.addLast(1);
+        a.removeLast() ;
+        a.get(0);
+        a.removeLast();
+        a.addFirst(5);
         a.addLast(6);
-        a.addLast(7);
-        a.addLast(8);
+        a.removeLast();
+        a.removeLast();
         a.addLast(9);
-        a.addFirst(1);
-        a.printDeque();
-        System.out.println(a.get(7));
+        a.removeLast();
+        a.addLast(11);
+        a.addLast(12);
+        a.removeFirst();
+        a.removeFirst();
     }
 }
 
