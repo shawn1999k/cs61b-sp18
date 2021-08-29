@@ -30,7 +30,10 @@ public class Palindrome {
     }
 
     private boolean newIsPdwithRecursion(Deque dq, CharacterComparator cc) {
-        if (dq.size() == 1 || dq.size() == 0) {
+        if (dq.size() == 0) {
+            return true;
+        }
+        if (dq.size() == 1 && Character.isLowerCase((char) dq.get(0))) {
             return true;
         }
         if (!cc.equalChars((char) dq.removeFirst(), (char) dq.removeLast())) {
